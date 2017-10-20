@@ -81,8 +81,12 @@ key_buffer		= 16M
   sleep 10
 )
 
+
+echo "Creating Databases"
 "${MYSQL_DIR}/bin/mysql" --defaults-file="${MYSQL_DIR}/my.cnf" -u "${MYSQL_USER}" -e "CREATE DATABASE test;"
 "${MYSQL_DIR}/bin/mysql" --defaults-file="${MYSQL_DIR}/my.cnf" -u "${MYSQL_USER}" -e "CREATE DATABASE development;"
+echo "Setting Password"
 "${MYSQL_DIR}/bin/mysql" --defaults-file="${MYSQL_DIR}/my.cnf" -u "${MYSQL_USER}" -e "SET PASSWORD FOR root@'localhost' = PASSWORD('${MYSQL_PASSWORD}');"
+echo "Checking Version"
 "${MYSQL_DIR}/bin/mysql" --defaults-file="${MYSQL_DIR}/my.cnf" --version | grep "${MYSQL_VERSION}"
 
