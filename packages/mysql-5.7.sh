@@ -12,6 +12,7 @@
 #
 MYSQL_VERSION=${MYSQL_VERSION:="5.7.17"}
 MYSQL_PORT=${MYSQL_PORT:="3307"}
+MYSQL_DATABASES=${MYSQL_DATABASE_NAME:="test,development"}
 
 set -e
 MYSQL_DIR=${MYSQL_DIR:=$HOME/mysql-$MYSQL_VERSION}
@@ -82,9 +83,13 @@ key_buffer		= 16M
 )
 
 
-echo "Creating Databases"
-"${MYSQL_DIR}/bin/mysql" --defaults-file="${MYSQL_DIR}/my.cnf" -u "${MYSQL_USER}" -e "CREATE DATABASE test;"
-"${MYSQL_DIR}/bin/mysql" --defaults-file="${MYSQL_DIR}/my.cnf" -u "${MYSQL_USER}" -e "CREATE DATABASE development;"
+
+DB_NAMES=($MYSQL_DATABASES)
+for DB_NAME in DB_NAMES; do 
+	echo "Creating Database ${DB_NAME}"
+	"${MYSQL_DIR}/bin/mysql" --defaults-file="${MYSQL_DIR}/my.cnf" -u "${MYSQL_USER}" -e "CREATE DATABASE ${DB_NAME};"
+done
+
 echo "Setting Password"
 "${MYSQL_DIR}/bin/mysql" --defaults-file="${MYSQL_DIR}/my.cnf" -u "${MYSQL_USER}" -e "SET PASSWORD FOR root@'localhost' = PASSWORD('${MYSQL_PASSWORD}');"
 echo "Checking Version"
