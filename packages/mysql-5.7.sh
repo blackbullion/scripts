@@ -84,8 +84,7 @@ key_buffer		= 16M
 
 
 
-DB_NAMES=($MYSQL_DATABASES)
-for DB_NAME in DB_NAMES; do 
+for DB_NAME in ($MYSQL_DATABASES); do 
 	echo "Creating Database ${DB_NAME}"
 	"${MYSQL_DIR}/bin/mysql" --defaults-file="${MYSQL_DIR}/my.cnf" -u "${MYSQL_USER}" -e "CREATE DATABASE ${DB_NAME};"
 done
